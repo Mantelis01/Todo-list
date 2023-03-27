@@ -1,4 +1,3 @@
-
 //setting DOM elements to js variables
 const addBtn = document.querySelector(".add");
 const list = document.querySelector(".list");
@@ -6,7 +5,7 @@ const delBtn = document.getElementById("delete");
 const inputBox = document.getElementById("inputBox");
 const dateBox = document.getElementById("date");
 
-const items = JSON.parse(sessionStorage.getItem("items")) || [];
+let items = JSON.parse(sessionStorage.getItem("items")) || [];
 
 //render function renders all needed list entries
 function render() {
@@ -26,9 +25,7 @@ function render() {
         li.appendChild(timeLeft)
         li.appendChild(checkBox);
         list.appendChild(li);
-        const time = timeLeft.value;
-        console.log(time);
-        // Add the new item to the list
+        const time = timeLeft.innerHTML;
         const item = { input, time};
         items.push(item);
         // Update sessionStorage
@@ -45,6 +42,11 @@ function deleteSelected() {
     for (const checkedItem of checkedListItems) {
         checkedItem.parentElement.remove();
     }
+    // Update sessionStorage after deleting items
+    items = [...list.children].map(child => {
+        return {input: child.innerText.split('\n')[0], time: child.querySelector('span').textContent};
+    });
+    sessionStorage.setItem("items", JSON.stringify(items));
 };
 
 //calculates time remaining to complete todo entry
@@ -55,5 +57,21 @@ function calcTimeLeft(dateBox) {
     const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
     const hours = Math.floor((timeLeft / (1000 * 60 * 60)) % 24);
     const minutes = Math.floor((timeLeft / (1000 * 60)) % 60);
-    return minutes ? ` ${days}d ${hours}h ${minutes}m left` : '';
+    return minutes ?  `${days}d ${hours}h ${minutes}m left` : '';
+}
+
+// Load items from sessionStorage on page load
+window.onload = function() {
+    items = JSON.parse(sessionStorage.getItem("items")) || [];
+    items.forEach(item => {
+        const li = document.createElement("li");
+        const checkBox = document.createElement("input");
+        checkBox.setAttribute("type", "checkbox");
+        li.innerHTML = item.input;
+        const timeLeft = document.createElement("span");
+        timeLeft.innerHTML = item.time;
+        li.appendChild(timeLeft)
+        li.appendChild(checkBox);
+        list.appendChild(li);
+    });
 }

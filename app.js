@@ -38,6 +38,7 @@ function render() {
                 li.style.textDecoration = "none";
             }
         });
+        sortItems(li);
         items.push(item);
         //Update sessionStorage
         sessionStorage.setItem("items", JSON.stringify(items));
@@ -69,6 +70,21 @@ function calcTimeLeft(dateBox) {
     const minutes = Math.floor((timeLeft / (1000 * 60)) % 60);
     return minutes ? `${days}d ${hours}h ${minutes}m left` : '';
 }
+
+function sortItems() {
+    const sortOption = document.querySelector(".sort").value;
+    switch (sortOption) {
+        case 'recentlyAdded':
+            items.sort((a, b) => new Date(b.time) - new Date(a.time));
+            break;
+        case 'recentlyCompleted':
+            items.sort((a, b) => new Date(b.timeCompleted) - new Date(a.timeCompleted));
+            break;
+        case 'deadline':
+            items.sort((a, b) => new Date(a.date) - new Date(b.date));
+            break;
+    }
+};
 
 // Load items from sessionStorage on page load
 window.onload = function () {

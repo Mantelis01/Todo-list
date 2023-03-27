@@ -13,7 +13,14 @@
             <input type="text" id="inputBox" maxlength="160">
             <input type="datetime-local" id="date">
             <button id="add" onclick="render()">Add Todo Item</button>
-            <button id="delete" onclick="deleteSelected()">Clear Completed</button>
+            <button id="added" onclick="deleteSelected()">Clear Completed</button>
+            <form>
+                <select name="sort" id="sort">
+                    <option value="recentlyAdded">recently Added</option>
+                    <option value="deadline">Deadline</option>
+                    <option value="RecentlyCompleted">Recently Completed</option>
+                </select>
+            </form>
             <ul class="list">
                 <!--list items pushed from app.js-->
             </ul>

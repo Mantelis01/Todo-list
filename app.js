@@ -46,6 +46,66 @@ function render() {
     }
 }
 
+//event listener for select element that sorts the list
+document.querySelector("#sort").addEventListener("change", function () {
+    sortItems();
+});
+
+//sorting function, still needs to be fixed
+function sortItems() {
+    const sortOption = document.getElementById(".sort");
+    switch (sortOption) {
+        case 'recentlyAdded':
+            items.sort((a, b) => new Date(b.time) - new Date(a.time));
+            break;
+        case 'RecentlyCompleted':
+            items.sort((a, b) => new Date(b.timeCompleted) - new Date(a.timeCompleted));
+            break;
+        case 'deadline':
+            items.sort((a, b) => new Date(a.date) - new Date(b.date));
+            break;
+    }
+
+    // Clear the list before rendering, otherwise it will render the items multiple times. Trust me I tried it...
+    list.innerHTML = '';
+
+    // Render the items in the sorted order
+    items.forEach(item => {
+        const li = document.createElement("li");
+        const checkBox = document.createElement("input");
+        checkBox.setAttribute("type", "checkbox");
+        li.innerHTML = item.input;
+        const timeLeft = document.createElement("span");
+        timeLeft.innerHTML = item.time;
+        li.appendChild(timeLeft);
+        li.appendChild(checkBox);
+        list.appendChild(li);
+
+        // Check if item is checked in the sessionStorage
+        if (item.checkBox && item.checkBox.checked) {
+            li.style.textDecoration = "line-through";
+            li.style.textDecorationColor = "black";
+            checkBox.checked = true;
+        } else {
+            li.style.textDecoration = "none";
+        }
+        checkBox.addEventListener("click", function () {
+            if (this.checked) {
+                li.style.textDecoration = "line-through";
+                li.style.textDecorationColor = "black";
+                list.appendChild(li);
+                sessionStorage.setItem("items", JSON.stringify(items));
+            } else {
+                li.style.textDecoration = "none";
+            }
+            // Update item object with checked property
+            item.checkBox = { checked: this.checked };
+            sessionStorage.setItem("items", JSON.stringify(items));
+        });
+    });
+}
+
+
 //function that deletes selected entries when "delete completed" button is clicked
 function deleteSelected() {
     const checkedListItems = document.querySelectorAll(".list input[type='checkbox']:checked");
@@ -70,63 +130,6 @@ function calcTimeLeft(dateBox) {
     return minutes ? `${days}d ${hours}h ${minutes}m left` : '';
 }
 
-document.querySelector("#sort").addEventListener("change", function () {
-    sortItems();
-});
-
-function sortItems() {
-    const sortOption = document.querySelector(".sort").value; // use ID instead of class
-    switch (sortOption) {
-        case 'recentlyAdded':
-            items.sort((a, b) => new Date(b.time) - new Date(a.time));
-            break;
-        case 'RecentlyCompleted': // fix typo in value
-            items.sort((a, b) => new Date(b.timeCompleted) - new Date(a.timeCompleted));
-            break;
-        case 'deadline':
-            items.sort((a, b) => new Date(a.date) - new Date(b.date));
-            break;
-    }
-
-    // Clear the list before rendering
-    list.innerHTML = '';
-
-    // Render the items in the sorted order
-    items.forEach(item => {
-        const li = document.createElement("li");
-        const checkBox = document.createElement("input");
-        checkBox.setAttribute("type", "checkbox");
-        li.innerHTML = item.input;
-        const timeLeft = document.createElement("span");
-        timeLeft.innerHTML = item.time;
-        li.appendChild(timeLeft);
-        li.appendChild(checkBox);
-        list.appendChild(li);
-
-        // Check if item is checked in the sessionStorage
-        if (item.checkBox && item.checkBox.checked) {
-            li.style.textDecoration = "line-through";
-            li.style.textDecorationColor = "black";
-            checkBox.checked = true;
-        } else {
-            li.style.textDecoration = "none";
-        }
-
-        checkBox.addEventListener("click", function () {
-            if (this.checked) {
-                li.style.textDecoration = "line-through";
-                li.style.textDecorationColor = "black";
-                list.appendChild(li);
-                sessionStorage.setItem("items", JSON.stringify(items));
-            } else {
-                li.style.textDecoration = "none";
-            }
-            // Update item object with checked property
-            item.checkBox = { checked: this.checked };
-            sessionStorage.setItem("items", JSON.stringify(items));
-        });
-    });
-}
 
 // Load items from sessionStorage on page load
 window.onload = function () {

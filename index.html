@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,20 +8,23 @@
     <link rel="stylesheet" href="styles.css">
     <title>Todo-List</title>
 </head>
+
 <body>
     <div class="container">
         <div class="toDoList">
-            <input type="text" id="inputBox" maxlength="160">
-            <input type="datetime-local" id="date">
-            <button id="add" onclick="render()">Add Todo Item</button>
-            <button id="added" onclick="deleteSelected()">Clear Completed</button>
-            <form>
-                <select name="sort" id="sort">
-                    <option value="recentlyAdded">recently Added</option>
-                    <option value="deadline">Deadline</option>
-                    <option value="RecentlyCompleted">Recently Completed</option>
-                </select>
-            </form>
+            <div class="inputBox">
+                <input type="text" id="inputBox" maxlength="160">
+                <input type="datetime-local" id="date">
+                <button id="add" onclick="render()">Add Todo Item</button>
+                <button id="added" onclick="deleteSelected()">Clear Completed</button>
+                <form id="form">
+                    <select name="sort" id="sort">
+                        <option value="recentlyAdded">recently Added</option>
+                        <option value="deadline">Deadline</option>
+                        <option value="RecentlyCompleted">Recently Completed</option>
+                    </select>
+                </form>
+            </div>
             <ul class="list">
                 <!--list items pushed from app.js-->
             </ul>
@@ -28,4 +32,5 @@
     </div>
     <script src="app.js"></script>
 </body>
+
 </html>

@@ -1,17 +1,15 @@
-
-/*Settina pagrindines spalvas kintamiesiems: */
-:root{
+/*Setting main values to variables: */
+:root {
     --darkBlue: #2c2b6e;
     --lighterBlue: #3733E5;
     --border: #000000;
     --lighterBorder: #2c2b52;
     --background: #2596be;
-    
-}
 
-*{
-margin: 0;
-padding: 0;
+}
+* {
+    margin: 0;
+    padding: 0;
 }
 
 body {
@@ -39,22 +37,36 @@ button {
     text-align: center;
 }
 
-button:hover{
+button:hover {
     background-color: var(--lighterBlue);
     border-color: var(--lighterBorder);
 }
 
-input{
+input {
     padding: 1.5vh;
     margin: 1vh;
     width: auto;
     height: auto;
+    cursor: pointer;
 }
 
-.left{
-    margin-left: 1.4vh;
+.inputBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-li{
+
+select {
+    border: var(--border);
+    padding: 1vh;
+    margin: .5em;
+    width: 100%;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 1vh;
+}
+
+li {
     font-size: 20px;
     list-style: none;
     display: flex;

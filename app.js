@@ -26,6 +26,8 @@ function render() {
         li.appendChild(checkBox);
         list.appendChild(li);
         const time = timeLeft.innerHTML;
+        timeLeft.style.color = "coral";
+        li.style.color = "black";
         const item = { input, time, checkBox };
         //function that checks if checkbox is checked, if true -> crosses out the entry and moves it to the bottom of the list
         checkBox.addEventListener("click", function () {

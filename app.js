@@ -22,17 +22,27 @@ function render() {
         li.innerHTML = input;
         const timeLeft = document.createElement("span");
         timeLeft.innerHTML = calcTimeLeft(dateBox.value);
-        li.appendChild(timeLeft)
+        li.appendChild(timeLeft);
         li.appendChild(checkBox);
         list.appendChild(li);
         const time = timeLeft.innerHTML;
-        const item = { input, time};
+        const item = { input, time, checkBox };
+        //function that checks if checkbox is checked, if true -> crosses out the entry and moves it to the bottom of the list
+        checkBox.addEventListener("click", function () {
+            if (this.checked) {
+                li.style.textDecoration = "line-through";
+                li.style.textDecorationColor = "black";
+                list.appendChild(li);
+                sessionStorage.setItem("items", JSON.stringify(items));
+            } else {
+                li.style.textDecoration = "none";
+            }
+        });
         items.push(item);
-        // Update sessionStorage
+        //Update sessionStorage
         sessionStorage.setItem("items", JSON.stringify(items));
         inputBox.value = '';
         dateBox.value = '';
-        console.log(items);
     }
 }
 
@@ -44,7 +54,7 @@ function deleteSelected() {
     }
     // Update sessionStorage after deleting items
     items = [...list.children].map(child => {
-        return {input: child.innerText.split('\n')[0], time: child.querySelector('span').textContent};
+        return { input: child.innerText.split('\n')[0], time: child.querySelector('span').textContent };
     });
     sessionStorage.setItem("items", JSON.stringify(items));
 };
@@ -57,11 +67,11 @@ function calcTimeLeft(dateBox) {
     const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
     const hours = Math.floor((timeLeft / (1000 * 60 * 60)) % 24);
     const minutes = Math.floor((timeLeft / (1000 * 60)) % 60);
-    return minutes ?  `${days}d ${hours}h ${minutes}m left` : '';
+    return minutes ? `${days}d ${hours}h ${minutes}m left` : '';
 }
 
 // Load items from sessionStorage on page load
-window.onload = function() {
+window.onload = function () {
     items = JSON.parse(sessionStorage.getItem("items")) || [];
     items.forEach(item => {
         const li = document.createElement("li");
@@ -70,8 +80,32 @@ window.onload = function() {
         li.innerHTML = item.input;
         const timeLeft = document.createElement("span");
         timeLeft.innerHTML = item.time;
-        li.appendChild(timeLeft)
+        li.appendChild(timeLeft);
         li.appendChild(checkBox);
         list.appendChild(li);
+
+        // Check if item is checked in the sessionStorage
+        if (item.checkBox && item.checkBox.checked) {
+            li.style.textDecoration = "line-through";
+            li.style.textDecorationColor = "black";
+            checkBox.checked = true;
+        } else {
+            li.style.textDecoration = "none";
+        }
+
+        checkBox.addEventListener("click", function () {
+            if (this.checked) {
+                li.style.textDecoration = "line-through";
+                li.style.textDecorationColor = "black";
+                list.appendChild(li);
+                sessionStorage.setItem("items", JSON.stringify(items));
+            } else {
+                li.style.textDecoration = "none";
+            }
+            // Update item object with checked property
+            item.checkBox = { checked: this.checked };
+            sessionStorage.setItem("items", JSON.stringify(items));
+        });
     });
-}
+};
+

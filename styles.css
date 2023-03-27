@@ -1,0 +1,81 @@
+/*Setting main values to variables: */
+:root {
+    --darkBlue: #2c2b6e;
+    --lighterBlue: #3733E5;
+    --border: #000000;
+    --lighterBorder: #2c2b52;
+    --background: #2596be;
+
+}
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    height: 100vh;
+    width: 100%;
+    background-color: var(--background);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+}
+
+
+button {
+    background-color: var(--darkBlue);
+    color: white;
+    border: 1px solid var(--border);
+    border-radius: 2em;
+    cursor: pointer;
+    display: inline-block;
+    margin: 1vh;
+    padding: 1.8vh .9vh;
+    font-weight: 500;
+    line-height: 1.5;
+    text-align: center;
+}
+
+button:hover {
+    background-color: var(--lighterBlue);
+    border-color: var(--lighterBorder);
+}
+
+input {
+    padding: 1.5vh;
+    margin: 1vh;
+    width: auto;
+    height: auto;
+    cursor: pointer;
+}
+
+.inputBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+select {
+    border: var(--border);
+    padding: 1vh;
+    margin: .5em;
+    width: 100%;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 1vh;
+}
+
+li {
+    font-size: 20px;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    padding: 1vh;
+}
+
+.list [type="checkbox"] {
+    width: 1.5em;
+    height: 1.5em;
+}
